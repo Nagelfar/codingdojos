@@ -6,8 +6,12 @@ using System.Linq;
 namespace GameOfLifeTimer
 {
     [TestClass]
-    public class UnitTest1
+    public class CellTests
     {
+        private Cell NewCell()
+        {
+            return new Cell(0,0);
+        }
         [TestMethod]
         public void TestMethod1()
         {
@@ -18,7 +22,7 @@ namespace GameOfLifeTimer
         [TestMethod]
         public void CanCreateNewCell()
         {
-            var cell = new Cell(1, 1);
+            var cell = NewCell();
 
             Assert.IsNotNull(cell);
         }
@@ -26,14 +30,14 @@ namespace GameOfLifeTimer
         [TestMethod]
         public void SameCellsAreUnique()
         {
-            var cell1 = new Cell(1, 1);
-            var cell2 = new Cell(1, 1);
+            var cell1 = NewCell();
+            var cell2 = NewCell();
             var set = new HashSet<Cell>();
 
             set.Add(cell1);
             set.Add(cell2);
 
-            Assert.AreEqual(set.Count, 1);              
+            Assert.AreEqual(set.Count, 1);
         }
 
         //[TestMethod]
@@ -42,9 +46,9 @@ namespace GameOfLifeTimer
         //    var cell = new Cell(0,0);
         //    Assert.AreEqual(8, cell.Neighbour.Count());
         //}
-  
+
         [TestMethod]
-        public void ContainsUpperLeft()
+        public void NeighboursContainsUpperLeft()
         {
             var cell = new Cell(0, 0);
             CollectionAssert.Contains(cell.Neighbour.ToList(), new Cell(-1, -1));

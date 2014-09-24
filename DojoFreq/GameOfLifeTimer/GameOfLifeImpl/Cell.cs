@@ -13,7 +13,6 @@ namespace GameOfLifeImpl
 
         public Cell(int x, int y)
         {
-            // TODO: Complete member initialization
             this.x = x;
             this.y = y;
         }
