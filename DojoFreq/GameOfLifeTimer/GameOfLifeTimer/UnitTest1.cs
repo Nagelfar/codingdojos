@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GameOfLifeImpl;
+using System.Collections.Generic;
 
 namespace GameOfLifeTimer
 {
@@ -22,6 +23,20 @@ namespace GameOfLifeTimer
             Assert.IsNotNull(cell);
         }
 
+        [TestMethod]
+        public void SameCellsAreUnique()
+        {
+            var cell1 = new Cell(1, 1);
+            var cell2 = new Cell(1, 1);
+            var set = new HashSet<Cell>();
+
+            set.Add(cell1);
+            set.Add(cell2);
+
+            Assert.AreEqual(set.Count, 1);
+
+              
+        }
 
     }
 }
