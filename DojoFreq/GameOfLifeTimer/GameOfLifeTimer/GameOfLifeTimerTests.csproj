@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="CellTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpaceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameOfLifeImpl\GameOfLifeImpl.csproj">
