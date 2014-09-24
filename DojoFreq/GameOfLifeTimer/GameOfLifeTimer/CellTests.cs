@@ -65,5 +65,31 @@ namespace GameOfLifeTimer
             var cell = new Cell(0, 0);
             CollectionAssert.Contains(cell.Neighbour.ToList(), new Cell(1, -1));
         }
+        [TestMethod]
+        public void NeighboursContainsLeft()
+        {
+            var cell = new Cell(0, 0);
+            CollectionAssert.Contains(cell.Neighbour.ToList(), new Cell(-1, 0));
+        }
+        [TestMethod]
+        public void NeighboursContainsRight()
+        {
+            var cell = new Cell(0, 0);
+            CollectionAssert.Contains(cell.Neighbour.ToList(), new Cell(1, 0));
+        }
+
+        [TestMethod]
+        public void NeighboursContainsLowerLeft()
+        {
+            var cell = new Cell(0, 0);
+            CollectionAssert.Contains(cell.Neighbour.ToList(), new Cell(-1, 1));
+        }
+
+        [TestMethod]
+        public void NeighboursContainsLowerMioddle()
+        {
+            var cell = new Cell(0, 0);
+            CollectionAssert.Contains(cell.Neighbour.ToList(), new Cell(0, 1));
+        }
     }
 }
