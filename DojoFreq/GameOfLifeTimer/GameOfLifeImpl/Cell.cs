@@ -18,6 +18,14 @@ namespace GameOfLifeImpl
             this.y = y;
         }
 
-        public IEnumerable<Cell> Neighbour { get { return new Cell[8]; } }
+        public IEnumerable<Cell> Neighbour
+        {
+            get
+            {
+                return new Cell[]{
+                    new Cell(x-1,y-1)
+                };
+            }
+        }
     }
 }

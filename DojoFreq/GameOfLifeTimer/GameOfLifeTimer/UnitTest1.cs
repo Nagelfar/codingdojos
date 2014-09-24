@@ -36,12 +36,18 @@ namespace GameOfLifeTimer
             Assert.AreEqual(set.Count, 1);              
         }
 
+        //[TestMethod]
+        //public void Returns8Neigh()
+        //{
+        //    var cell = new Cell(0,0);
+        //    Assert.AreEqual(8, cell.Neighbour.Count());
+        //}
+  
         [TestMethod]
-        public void Returns8Neigh()
+        public void ContainsUpperLeft()
         {
-            var cell = new Cell(0,0);
-            Assert.AreEqual(8, cell.Neighbour.Count());
+            var cell = new Cell(0, 0);
+            CollectionAssert.Contains(cell.Neighbour.ToList(), new Cell(-1, -1));
         }
-
     }
 }
