@@ -10,7 +10,7 @@ namespace GameOfLifeTimer
     {
         private Cell NewCell()
         {
-            return new Cell(0,0);
+            return new Cell(0, 0);
         }
         [TestMethod]
         public void TestMethod1()
@@ -52,6 +52,18 @@ namespace GameOfLifeTimer
         {
             var cell = new Cell(0, 0);
             CollectionAssert.Contains(cell.Neighbour.ToList(), new Cell(-1, -1));
+        }
+        [TestMethod]
+        public void NeighboursContainsUpper()
+        {
+            var cell = new Cell(0, 0);
+            CollectionAssert.Contains(cell.Neighbour.ToList(), new Cell(0, -1));
+        }
+        [TestMethod]
+        public void NeighboursContainsUpperRight()
+        {
+            var cell = new Cell(0, 0);
+            CollectionAssert.Contains(cell.Neighbour.ToList(), new Cell(1, -1));
         }
     }
 }
