@@ -13,5 +13,13 @@ namespace GameOfLifeTimer
             var c = new Class1();
             Assert.IsNotNull(c);
         }
+
+        [TestMethod]
+        public void CanCreateNewCell()
+        {
+            var cell = new Cell(1, 1);
+
+            Assert.IsNotNull(cell);
+        }
     }
 }
