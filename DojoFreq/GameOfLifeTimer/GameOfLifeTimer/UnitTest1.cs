@@ -21,5 +21,7 @@ namespace GameOfLifeTimer
 
             Assert.IsNotNull(cell);
         }
+
+
     }
 }

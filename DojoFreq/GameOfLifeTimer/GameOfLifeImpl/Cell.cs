@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameOfLifeImpl
 {
-    public class Cell
+    public struct Cell
     {
         private int x;
         private int y;
