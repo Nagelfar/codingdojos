@@ -31,6 +31,7 @@ namespace GameOfLifeImpl
 
                     new Cell(x-1,y+1),
                     new Cell(x,y+1),
+                    new Cell(x+1,y+1),
                 };
             }
         }

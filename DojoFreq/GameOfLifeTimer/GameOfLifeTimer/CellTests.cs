@@ -91,5 +91,12 @@ namespace GameOfLifeTimer
             var cell = new Cell(0, 0);
             CollectionAssert.Contains(cell.Neighbour.ToList(), new Cell(0, 1));
         }
+
+        [TestMethod]
+        public void NeighboursContainsLowerRight()
+        {
+            var cell = new Cell(0, 0);
+            CollectionAssert.Contains(cell.Neighbour.ToList(), new Cell(1, 1));
+        }
     }
 }
