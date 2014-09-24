@@ -8,6 +8,13 @@ namespace GameOfLifeImpl
 {
     public class Space
     {
-        public bool IsEmpty { get { return true; } }
+        private Cell[] cell;
+
+        public Space(Cell[] cell)
+        {
+            // TODO: Complete member initialization
+            this.cell = cell;
+        }
+        public bool IsEmpty { get { return !cell.Any(); } }
     }
 }

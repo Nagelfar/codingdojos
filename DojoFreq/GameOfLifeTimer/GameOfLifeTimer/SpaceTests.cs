@@ -14,9 +14,16 @@ namespace GameOfLifeTimer
         [TestMethod]
         public void EmptySpaceIsEmpty()
         {
-            var space = new Space();
+            var space = new Space(new Cell[0]);
 
             Assert.IsTrue(space.IsEmpty);
+        }
+      [TestMethod]
+        public void OneCell_SpaceIsNotEmpty()
+        {
+            var space = new Space(new[] { new Cell(0, 0) });
+
+            Assert.IsFalse(space.IsEmpty);
         }
     }
 }
