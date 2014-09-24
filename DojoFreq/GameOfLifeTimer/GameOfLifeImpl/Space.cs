@@ -8,13 +8,12 @@ namespace GameOfLifeImpl
 {
     public class Space
     {
-        private Cell[] cell;
+        private IEnumerable<Cell> _cells;
 
-        public Space(Cell[] cell)
+        public Space(IEnumerable<Cell> cells)
         {
-            // TODO: Complete member initialization
-            this.cell = cell;
+            this._cells = cells;
         }
-        public bool IsEmpty { get { return !cell.Any(); } }
+        public bool IsEmpty { get { return !_cells.Any(); } }
     }
 }
