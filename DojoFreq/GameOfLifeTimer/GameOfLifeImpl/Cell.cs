@@ -17,5 +17,7 @@ namespace GameOfLifeImpl
             this.x = x;
             this.y = y;
         }
+
+        public IEnumerable<Cell> Neighbour { get { return new Cell[8]; } }
     }
 }
