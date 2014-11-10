@@ -1,20 +1,21 @@
 ﻿namespace DojoOLGFsharp
 
 type Position(x:int, y:int) = struct
-    member private this.X = x
-    member private this.Y = y
-    member this.North() = new Position(x,y+1)
-    member this.South() = new Position(x,y-1)
-    member this.East() = new Position(x+1,y)
-    member this.West() = new Position(x-1,y)
+    member this.X = x
+    member  this.Y = y
+
+    member this.Add(otherX:int,otherY:int) = new Position(x+otherX,y+otherY)
+
+    member this.North() = this.Add(0,1)
+    member this.South() = this.Add(0,-1)
+    member this.East() = this.Add(1,0)
+    member this.West() = this.Add(-1,0)    
 
     static member (+) (lhs:Position, rhs: Position) = new Position(lhs.X + rhs.X,lhs.Y + rhs.Y)
     static member( ~-)(position:Position) = new Position(-position.X,-position.Y)
     end
 
 type Heading(direction:char) = struct
-
-    member this.Move()= this.Move(new Position(0,0))
         
     member this.Move(position:Position) = 
         match direction with
@@ -31,16 +32,17 @@ type Heading(direction:char) = struct
             | 'S' -> new Heading( 'E')
             | 'W' -> new Heading( 'S')
             | _-> this
+    member this.Invert() = this.RotateLeft().RotateLeft()
 
     end
 
 type Rover(position:Position, heading:Heading) = struct
     member this.Execute(action:char) = 
         match action with
-        | 'f' ->  new Rover(position + heading.Move(),heading)
-        | 'b' -> new Rover(position + (-heading.Move()),heading)
+        | 'f' -> new Rover(heading.Move(position),heading)
+        | 'b' -> new Rover(heading.Invert().Move(position),heading)
         | 'l' -> new Rover(position, heading.RotateLeft())
-        | 'r'->new Rover(position,heading.RotateLeft().RotateLeft().RotateLeft())
+        | 'r' -> new Rover(position, heading.Invert().RotateLeft())
         | _->this
 
     end

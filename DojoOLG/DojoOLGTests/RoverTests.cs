@@ -33,6 +33,19 @@ namespace DojoOLGTests
         }
 
         [TestMethod]
+        public void WhenMovingBackwards_YMustBeDecreased2()
+        {
+            var position = new Position(1, 0);
+            var heading = new Heading('N');
+
+            var rover = new Rover(position, heading);
+
+            var newRover = rover.Execute('b');
+
+            Assert.AreEqual(new Rover(new Position(1, -1), heading), newRover);
+        }
+
+        [TestMethod]
         public void WhenTurningLeft_TheHeadingMustChange_ToWest()
         {
             var position = new Position(0, 0);
