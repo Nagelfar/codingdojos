@@ -7,17 +7,23 @@ type BoardSize(width:int, height:int)  = struct
 
     end
 
-type Position(boardSize:BoardSize, x:int, y:int)= struct
-    member this.X = x
-    member  this.Y = y
 
-    member this.Add(otherX:int,otherY:int) = new Position(boardSize,x+otherX,y+otherY)
+type Position(boardSize:BoardSize, x:int, y:int) = struct
+    member this.X =x
+    member this.Y = y
+
+    member this.Add(otherX:int,otherY:int) = new Position (boardSize,boardSize.WrapX(x+otherX),boardSize.WrapY(y+otherY))
 
     member this.North() = this.Add(0,1)
     member this.South() = this.Add(0,-1)
     member this.East() = this.Add(1,0)
     member this.West() = this.Add(-1,0)    
     end
+
+    
+module Board=
+    let BoardPosition(boardSize:BoardSize, x:int, y:int) = new Position(boardSize,boardSize.WrapX(x),boardSize.WrapY(y))
+
 
 type Heading(direction:char) = struct
         
