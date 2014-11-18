@@ -11,6 +11,11 @@ namespace DojoOLGTests
     [TestClass]
     public class HeadingTests
     {
+
+        private Position Position(int x, int y)
+        {
+            return new Position(x, y);
+        }
         [TestMethod]
         public void WhenConstructingAHeading_TwoDifferentInstancesAreEqual()
         {
@@ -22,53 +27,53 @@ namespace DojoOLGTests
         [TestMethod]
         public void WhenMovingNorth_YIsIncreased()
         {
-            var rover = new Position(0, 0).North();
+            var rover =  Position(0, 0).North();
 
-            Assert.AreEqual(new Position(0, 1), rover);
+            Assert.AreEqual( Position(0, 1), rover);
         }
         [TestMethod]
         public void WhenMovingSouth_YIsDecreased()
         {
-            var rover = new Position(0, 0).South();
+            var rover =  Position(0, 0).South();
 
-            Assert.AreEqual(new Position(0, -1), rover);
+            Assert.AreEqual( Position(0, -1), rover);
         }
         [TestMethod]
         public void WhenMovingEast_XIsIncreased()
         {
-            var rover = new Position(0, 0).East();
+            var rover =  Position(0, 0).East();
 
-            Assert.AreEqual(new Position(1, 0), rover);
+            Assert.AreEqual( Position(1, 0), rover);
         }
         [TestMethod]
         public void WhenMovingWest_XIsDecreased()
         {
-            var rover = new Position(0, 0).West();
+            var rover =  Position(0, 0).West();
 
-            Assert.AreEqual(new Position(-1, 0), rover);
+            Assert.AreEqual( Position(-1, 0), rover);
         }
 
 
         [TestMethod]
         public void WhenConstructionARover_TwoRovesMustBeEqual()
         {
-            var position = new Position(0, 0);
+            var position =  Position(0, 0);
             var heading = new Heading('f');
             var rover = new Rover(position, heading);
 
             
-            Assert.AreEqual(rover, new Rover(new Position(0,0),new Heading('f')));
+            Assert.AreEqual(rover, new Rover( Position(0,0),new Heading('f')));
         }
 
         [TestMethod]
         public void WhenHeadingNorth_AndMoving_XMustBeIncreasedByOne()
         {
-            var position = new Position(0, 0);
+            var position =  Position(0, 0);
             var heading = new Heading('N');
 
             var newPosition = heading.Move(position);
 
-            Assert.AreEqual(new Position(0, 1), newPosition);
+            Assert.AreEqual( Position(0, 1), newPosition);
         }
         [TestMethod]
         public void WhenRotatingLeft_HeadingChangedToWest()

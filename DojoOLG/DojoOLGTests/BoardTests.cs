@@ -11,11 +11,16 @@ namespace DojoOLGTests
     [TestClass]
     public class BoardTests
     {
+        private Position Position(int x, int y)
+        {
+            return new Position(x, y);
+        }
+
         [TestMethod]
         public void WhenWrappingAValidPosition_ItShouldNotBeChanged()
         {
             var boardSize = new BoardSize(10, 10);
-            var position = new Position(5, 5);
+            var position =  Position(5, 5);
             var newPosition = boardSize.Wrap(position);
 
             Assert.AreEqual(new Position(5, 5), newPosition);
@@ -24,7 +29,7 @@ namespace DojoOLGTests
         public void WhenMovedOutsideOfPositiveXBorder_PositionIsWrapped()
         {
             var boardSize = new BoardSize(10, 10);
-            var position = new Position(11, 9);
+            var position =  Position(11, 9);
             var newPosition = boardSize.Wrap(position);
 
             Assert.AreEqual(new Position(1, 9), newPosition);

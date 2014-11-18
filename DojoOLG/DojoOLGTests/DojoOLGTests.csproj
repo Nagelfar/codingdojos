@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="BoardTests.cs" />
     <Compile Include="HeadingTests.cs" />
+    <Compile Include="IntegrationTests.cs" />
     <Compile Include="PositionTests.cs" />
     <Compile Include="RoverTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
