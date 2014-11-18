@@ -13,7 +13,7 @@ namespace DojoOLGTests
     {
         private Position Position(int x, int y)
         {
-            return new Position(x, y);
+            return new Position(new BoardSize(10,10),x, y);
         }
 
         [TestMethod]
@@ -29,14 +29,17 @@ namespace DojoOLGTests
             var position1 =  Position(1, 1);
             var position2 =  Position(1, 1);
 
-            Assert.AreEqual( Position(2, 2), position1 + position2);
+            Assert.AreEqual( Position(2, 2), position1.Add( position2.X,position1.Y));
         }
+      
         [TestMethod]
-        public void WhenInvertingAPosition_TheResultIsCorrect()
+        public void WhenUsingABoardSizeBiggerThanThePositions_ThenTheCorrdinatesAreNotWrapped()
         {
-            var position =  Position(1, 1);
+            var boardSize = new BoardSize(10, 10);
+ 
+            var position = new Position(boardSize,5,5);
 
-            Assert.AreEqual( Position(-1, -1), -position);
+            Assert.AreEqual(new Position(boardSize, 5, 5),position);
         }
     }
 }

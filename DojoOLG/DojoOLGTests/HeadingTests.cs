@@ -14,7 +14,7 @@ namespace DojoOLGTests
 
         private Position Position(int x, int y)
         {
-            return new Position(x, y);
+            return new Position(new BoardSize(10,10),x, y);
         }
         [TestMethod]
         public void WhenConstructingAHeading_TwoDifferentInstancesAreEqual()
