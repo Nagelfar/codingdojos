@@ -29,5 +29,21 @@ namespace DojoOLGTests
 
             Assert.AreEqual(new Position(1, 9), newPosition);
         }
+        [TestMethod]
+        public void WhenWrappingAValidXPosition_ItShouldNotBeChanged()
+        {
+            var boardSize = new BoardSize(10, 10);
+            var newX = boardSize.WrapX(5);
+
+            Assert.AreEqual(newX, 5);
+        }
+        [TestMethod]
+        public void WhenWrappingAValidYPosition_ItShouldNotBeChanged()
+        {
+            var boardSize = new BoardSize(10, 10);
+            var newY = boardSize.WrapY(5);
+
+            Assert.AreEqual(newY, 5);
+        }
     }
 }
