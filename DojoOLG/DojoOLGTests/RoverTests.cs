@@ -74,6 +74,20 @@ namespace DojoOLGTests
 
             Assert.AreEqual(new Rover( Position(0, 0), new Heading('E')), newRover);
         }
+
+        [TestMethod]
+        public void WhenCalledWithString_ThenEachCharIsInterpretedAsCommand()
+        {
+            var command = "ff";
+            var position = Position(0, 0);
+            var heading = new Heading('N');
+
+            var rover = new Rover(position, heading);
+
+            var newRover = rover.Execute(command);
+
+            Assert.AreEqual(new Rover(Position(0,2), new Heading('E')), newRover);
+        }
        
     }
 }

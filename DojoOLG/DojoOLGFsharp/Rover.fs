@@ -55,4 +55,6 @@ type Rover(position:Position, heading:Heading) = struct
         | 'r' -> new Rover(position, heading.Invert().RotateLeft())
         | _->this
 
+    member this.Execute(commands:System.Collections.Generic.IEnumerable<char>) =
+        commands.fo
     end
