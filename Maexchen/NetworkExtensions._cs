@@ -1,0 +1,61 @@
+using System;
+using System.Net;
+using System.Net.Sockets;
+// using System.Net.Sockets;
+using System.Reactive;
+using System.Reactive.Linq;
+
+public static partial class NetworkExtensions
+    {
+        public static IObservable<Unit> WhenConnected(this Socket socket, IPAddress address, int port)
+        {
+            socket.ConnectAsync(new SocketAsyncEventArgs().po)
+            // return Observable.FromAsync<IPAddress, int>(socket.ConnectAsync, socket.EndConnect)(address, port);
+            return Observable.FromAsyncPattern<IPAddress, int>(socket.co, socket.EndConnect)(address, port);
+        }
+
+        public static IObservable<byte[]> WhenDataReceived(this Socket socket, int byteCount, SocketFlags flags = SocketFlags.None)
+        {
+            // Contract.Requires(byteCount > 0);
+
+            return Observable.CreateWithDisposable<byte[]>(
+                observer =>
+                {
+                    var whenDataReceived = Observable.FromAsyncPattern<byte[], int, int, SocketFlags, int>(
+                        socket.BeginReceive,
+                        socket.EndReceive);
+
+                    byte[] buffer = new byte[byteCount];
+                    int remainder = byteCount;
+                    bool shutdown = false;
+
+                    return Observable.While(() => remainder > 0 && !shutdown,
+                        Observable.Defer(() =>
+                            whenDataReceived(buffer, buffer.Length - remainder, remainder, flags)
+                            .Do(read =>
+                            {
+                                remainder -= read;
+
+                                if (read == 0)
+                                    shutdown = true;
+                            })))
+                        .Prune(whenCompleted => whenCompleted.Select(_ => buffer))
+                        .Subscribe(
+                            observer.OnNext,
+                            ex =>
+                            {
+                                var socketError = ex as SocketException;
+
+                                if (socketError != null &&
+                                        (socketError.SocketErrorCode == SocketError.Shutdown
+                                    || socketError.SocketErrorCode == SocketError.Disconnecting))
+                                {
+                                    observer.OnCompleted();
+                                }
+                                else
+                                    observer.OnError(ex);
+                            },
+                            observer.OnCompleted);
+                });
+        }
+    }

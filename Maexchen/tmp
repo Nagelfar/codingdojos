@@ -1,0 +1,104 @@
+using System;
+using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
+
+namespace ReactiveProgrammingConsole
+{
+	class ReactiveSocketsLab
+	{
+		static void Main()
+		{
+			var ip = IPAddress.Loopback;
+			var port = 4000;
+
+			var serverCompleted = new ManualResetEvent(false);
+
+			StartServer(ip, port)
+				.Subscribe(_ => serverCompleted.Set());
+
+			Console.WriteLine("The server is running.");
+
+			var clientCompleted = new ManualResetEvent(false);
+
+			StartClient(ip, port)
+				.Subscribe(_ => clientCompleted.Set());
+
+			Console.WriteLine();
+			Console.WriteLine("The client is listening.");
+			Console.WriteLine();
+			Console.WriteLine("Enter messages to be sent to all clients, one per line.");
+			Console.WriteLine("Enter an empty message to shutdown.");
+
+			WaitHandle.WaitAll(new[] { serverCompleted, clientCompleted });
+
+			Console.WriteLine();
+			Console.WriteLine("All sockets closed.");
+			Console.ReadKey();
+		}
+
+		static IObservable<Unit> StartServer(IPAddress ip, int port)
+		{
+			var server =
+				from listener in Observable.Return(new TcpListener(ip, port))
+					.Do(listener => listener.Start())
+				from client in Observable.FromAsyncPattern<TcpClient>(listener.BeginAcceptTcpClient, listener.EndAcceptTcpClient)()
+				from response in
+					Observable.Using(() => client, _ =>
+					Observable.Using(client.GetStream, stream =>
+						from message in Observable
+							.Defer(() => Observable
+							.Start(() => Console.ReadLine()))
+							.Repeat()
+							// Comment TakeWhile to test the client's ability to shutdown itself upon receiving an empty message.
+							// Uncomment TakeWhile to test the server's ability to gracefully shutdown all clients and itself.
+							.TakeWhile(message => message.Length > 0)
+						select new { Stream = stream, Message = Encoding.UTF8.GetBytes(message) }))
+				select response;
+
+			return
+				server.Do(
+					response =>
+					{
+						response.Stream.Write(BitConverter.GetBytes(response.Message.Length), 0, 4);
+						response.Stream.Write(response.Message, 0, response.Message.Length);
+					},
+					ex => Console.WriteLine("Server error: {0}", ex),
+					() => Console.WriteLine("Server shutdown."))
+				.Prune(whenCompleted => whenCompleted.Select(_ => new Unit()));
+		}
+
+		static IObservable<Unit> StartClient(IPAddress ip, int port)
+		{
+			var client = Observable.Using(
+				() => new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp),
+				socket =>
+				from _ in socket.WhenConnected(ip, port)
+				from message in
+					(from first in socket.WhenDataReceived(4)
+					 let length = BitConverter.ToInt32(first, 0)
+					 from message in
+						 Observable.If(
+							 condition: () => length > 0,
+							 thenSource: from second in socket.WhenDataReceived(length)
+								  select Encoding.UTF8.GetString(second, 0, length),
+							 elseSource: Observable.Return<string>(null))
+					 select message)
+					.Repeat()
+					.TakeWhile(message => message != null)
+				select message);
+
+			return
+				client.Do(
+					message => Console.WriteLine("Message from server: {0}", message),
+					ex => Console.WriteLine("Client error: {0}", ex),
+					() => Console.WriteLine("Client shutdown."))
+				.Prune(whenCompleted => whenCompleted.Select(_ => new Unit()));
+		}
+	}
+
+
+}
